@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SEO Analyzer</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      padding: 0;
+      color: #2d3748; /* Dark slate for body text, high contrast */
+    }
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: #ffffff;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #1a202c; /* Darker shade for headings */
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #4a5568; /* Softer gray for paragraph text */
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    textarea {
+      width: 100%;
+      box-sizing: border-box; /* Ensures padding/border included in width */
+      height: 160px;
+      padding: 1rem;
+      font-size: 1rem;
+      border: 1px solid #e2e8f0; /* Light gray border */
+      border-radius: 8px;
+      resize: vertical;
+      color: #2d3748;
+      background: #f7fafc;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    textarea:focus {
+      border-color: #3182ce; /* Blue focus border */
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+      outline: none;
+    }
+    button {
+      display: block;
+      margin: 1.5rem auto;
+      padding: 0.75rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%); /* Gradient blue button */
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .results {
+      margin-top: 2.5rem;
+    }
+    .block {
+      background: #f7fafc;
+      padding: 1.25rem;
+      border-left: 4px solid #3182ce; /* Match button color */
+      margin-bottom: 1.25rem;
+      border-radius: 8px;
+    }
+    .block strong {
+      color: #1a202c; /* Darker for emphasis */
+      font-weight: 600;
+    }
+    .hidden {
+      display: none;
+    }
+    ul {
+      padding-left: 1.5rem;
+      color: #4a5568;
+    }
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SEO Analyzer</h1>
+    <p>Paste your text below to get keyword suggestions, a readability score, and your text with keywords inserted.</p>
+    <textarea id="inputText" placeholder="Enter or paste your text here..."></textarea>
+    <button id="analyzeBtn">Analyze SEO</button>
+
+    <div id="results" class="results hidden">
+      <div class="block">
+        <strong>Top Keywords:</strong>
+        <ul id="keywordsList"></ul>
+      </div>
+      <div class="block">
+        <strong>Readability Score:</strong>
+        <p id="readabilityScore"></p>
+      </div>
+      <div class="block">
+        <strong>Updated Text with Keywords:</strong>
+        <p id="updatedText"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const inputText = document.getElementById('inputText');
+    const resultsDiv = document.getElementById('results');
+    const keywordsList = document.getElementById('keywordsList');
+    const readabilityScore = document.getElementById('readabilityScore');
+    const updatedText = document.getElementById('updatedText');
+
+    analyzeBtn.addEventListener('click', async () => {
+      const text = inputText.value.trim();
+      if (!text) {
+        alert('Please enter some text to analyze.');
+        return;
+      }
+
+      analyzeBtn.disabled = true;
+      analyzeBtn.textContent = 'Analyzing...';
+
+      try {
+        const res = await fetch('http://127.0.0.1:8000/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+
+        const data = await res.json();
+
+        // Populate keywords
+        keywordsList.innerHTML = data.keywords
+          .map(k => `<li>${k}</li>`)
+          .join('');
+
+        // Show readability
+        readabilityScore.textContent = data.readability;
+
+        // Show updated text
+        updatedText.textContent = data.updated_text || text;
+
+        // Reveal results
+        resultsDiv.classList.remove('hidden');
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+
+      } catch (err) {
+        console.error(err);
+        alert('Error processing SEO analysis. Please try again.');
+      } finally {
+        analyzeBtn.disabled = false;
+        analyzeBtn.textContent = 'Analyze SEO';
+      }
+    });
+  </script>
+</body>
+</html>
