@@ -4,13 +4,6 @@ An intelligent SEO Analyzer that extracts keywords, analyzes content readability
 
 ---
 
-## 📸 Demo Preview
-
-> 🔗 Add your demo video link here  
-> 🖼️ Add screenshots of the frontend or API response here
-
----
-
 ## 📌 Features
 
 - ✅ Analyze input text using **TextRazor NLP API**
