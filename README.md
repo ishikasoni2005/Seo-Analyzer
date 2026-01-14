@@ -1,6 +1,6 @@
 # 🚀 SEO Analyzer Web App
 
-An intelligent SEO Analyzer that extracts keywords, analyzes content readability, and suggests keyword insertion to optimize text for better search engine visibility. Built using **FastAPI**, **TextRazor API**, and **spaCy**, with a responsive frontend for real-time content optimization.
+An intelligent SEO Analyzer developed at **Zenerotech Pvt. Ltd.** that extracts keywords, analyzes content readability, and suggests keyword insertion to optimize text for better search engine visibility. Built using **FastAPI**, **TextRazor API**, and **spaCy**, with a responsive frontend for real-time content optimization.
 
 ---
 
@@ -23,5 +23,3 @@ An intelligent SEO Analyzer that extracts keywords, analyzes content readability
 | Frontend  | HTML5, CSS3 (custom, responsive), JavaScript |
 | NLP       | spaCy (en_core_web_sm)           |
 | DevOps    | Uvicorn (for local development)  |
-
----
