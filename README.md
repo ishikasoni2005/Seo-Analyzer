@@ -1,7 +1,6 @@
 # SEO Analyzer Full-Stack App
 
 An intelligent SEO Analyzer that evaluates content for keyword performance, readability, and optimization opportunities. The project started as a FastAPI app and has now been upgraded into a scalable full-stack architecture using Django REST Framework and React.
-
 The application combines TextRazor, spaCy, and `textstat` to extract keywords, measure keyword density, calculate readability, suggest related search terms, and produce an optimized text draft.
 
 ## Features
